@@ -13,10 +13,30 @@
 
 <body>
 
+<!-- ================= MODAL PDV ================= -->
+<div id="modalPdv" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModalPdv()">&times;</span>
+        <h2>Cadastrar Local (PDV)</h2>
+
+        <input type="text" id="novoPdv" placeholder="Nome do PDV">
+
+        <button onclick="cadastrarPdv()">Salvar PDV</button>
+
+        <hr>
+
+        <h3>Locais cadastrados</h3>
+        <ul id="listaPdvs"></ul>
+    </div>
+</div>
+
+<!-- ================= LAYOUT ================= -->
 <div class="container">
 
     <aside class="sidebar">
         <h2>EFC ERP</h2>
+
+        <button onclick="abrirModalPdv()">Gerenciar PDVs</button>
         <button id="btnBackup">Backup</button>
         <button onclick="logout()">Sair</button>
     </aside>
@@ -68,6 +88,16 @@
 </div>
 
 <script src="./app.js"></script>
+
+<script>
+function abrirModalPdv() {
+    document.getElementById("modalPdv").style.display = "flex";
+}
+
+function fecharModalPdv() {
+    document.getElementById("modalPdv").style.display = "none";
+}
+</script>
 
 </body>
 </html>
