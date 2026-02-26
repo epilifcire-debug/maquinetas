@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - ERP Maquinetas</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+  <aside class="sidebar">
+    <h2>ERP</h2>
+    <button onclick="backupSistema()">Backup</button>
+    <button onclick="logout()">Sair</button>
+  </aside>
+
+  <main class="main">
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <h1>Dashboard</h1>
+
+    <div id="cardsPdvs" class="cards"></div>
+
+    <canvas id="graficoAdmin" height="100"></canvas>
+
+    <h2>Cadastro PDV</h2>
+    <input type="text" id="novoPdv" placeholder="Nome do PDV">
+    <button onclick="cadastrarPdv()">Adicionar</button>
+    <ul id="listaPdvs"></ul>
+
+    <h2>Cadastrar Maquineta</h2>
+
+    <div class="form-grid">
+      <input type="text" id="serial" placeholder="Serial">
+      <input type="text" id="empresa" placeholder="Empresa / CNPJ">
+      <input type="text" id="admin" placeholder="Administradora">
+
+      <select id="local"></select>
+
+      <select id="status">
+        <option value="Ativa">Ativa</option>
+        <option value="Manutenção">Manutenção</option>
+        <option value="Inativa">Inativa</option>
+      </select>
+
+      <button onclick="salvarMaquineta()">Salvar</button>
+    </div>
+
+    <h2>Maquinetas</h2>
+
+    <select id="filtroStatus" onchange="carregarMaquinetas()">
+      <option value="Todos">Todos</option>
+      <option value="Ativa">Ativa</option>
+      <option value="Manutenção">Manutenção</option>
+      <option value="Inativa">Inativa</option>
+    </select>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Serial</th>
+          <th>Empresa</th>
+          <th>Admin</th>
+          <th>Local</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaMaquinetas"></tbody>
+    </table>
+
+    <div id="cardsMobile" class="cards-mobile"></div>
+
+  </main>
+</div>
+
+<!-- Modal Histórico -->
+<div id="modalHistorico" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="fecharModal()">&times;</span>
+    <h2>Histórico</h2>
+    <div id="conteudoHistorico"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

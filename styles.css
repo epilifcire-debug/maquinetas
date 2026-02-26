@@ -1,0 +1,329 @@
+/* ================= RESET ================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f6f9;
+  color: #111;
+}
+
+/* ================= LOGIN ================= */
+
+.login-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 350px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-top: 0;
+}
+
+.login-box input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* ================= LAYOUT ================= */
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+  width: 240px;
+  background: #111827;
+  color: white;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sidebar button:hover {
+  background: #374151;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+h1, h2 {
+  margin-top: 20px;
+}
+
+/* ================= CARDS DASHBOARD ================= */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card-total {
+  background: white;
+  padding: 15px;
+  border-radius: 14px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.card-total h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.card-total p {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0 0;
+}
+
+/* ================= FORM ================= */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input, select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  width: 100%;
+}
+
+button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* ================= TABELA DESKTOP ================= */
+
+table {
+  width: 100%;
+  background: white;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+th {
+  background: #f9fafb;
+  text-align: left;
+}
+
+/* ================= STATUS ================= */
+
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: white;
+}
+
+.Ativa { background: #16a34a; }
+.Manutenção { background: #f59e0b; }
+.Inativa { background: #dc2626; }
+
+/* ================= MOBILE CARDS ================= */
+
+.cards-mobile {
+  display: none;
+}
+
+.mobile-card {
+  background: white;
+  padding: 15px;
+  border-radius: 14px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.mobile-card h3 {
+  margin: 0 0 8px;
+}
+
+.mobile-card p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.mobile-card button {
+  margin-top: 6px;
+  width: 100%;
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.close {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ================= ANIMAÇÕES ================= */
+
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+button {
+  transition: 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+/* ================= MENU MOBILE ================= */
+
+.menu-btn {
+  display: none;
+  margin-bottom: 10px;
+  background: #111827;
+}
+
+@media (max-width: 768px) {
+
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none;
+    width: 100%;
+  }
+
+  .sidebar.ativo {
+    display: block;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  table {
+    display: none;
+  }
+
+  .cards-mobile {
+    display: block;
+  }
+}
+
+/* ================= DARK MODE AUTOMÁTICO ================= */
+
+@media (prefers-color-scheme: dark) {
+
+  body {
+    background: #111827;
+    color: white;
+  }
+
+  .card-total,
+  .mobile-card,
+  table,
+  .modal-content,
+  .login-box {
+    background: #1f2937;
+    color: white;
+  }
+
+  th {
+    background: #374151;
+  }
+
+  input, select {
+    background: #374151;
+    color: white;
+    border: 1px solid #555;
+  }
+
+  .sidebar {
+    background: #000;
+  }
+
+}
