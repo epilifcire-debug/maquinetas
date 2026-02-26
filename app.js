@@ -1,5 +1,5 @@
 const USUARIO_FIXO = "ericfilipe";
-const SENHA_HASH_FIXA = "b5b9c7f6e0c4a76c0f3c2dbf8d5f8d6bb1d2e6f9e8e7a6c5d4c3b2a1f0e9d8c7";
+const SENHA_HASH_FIXA = "4d7c9f6b1a0b5b9a6d5d6f8b5d64c65b5f99c0f02b1b4f2a6d8e4c3e7a4f5d0c";
 
 let indexEditando = null;
 let grafico;
@@ -264,4 +264,5 @@ function backupSistema() {
     a.href = URL.createObjectURL(blob);
     a.download = "backup_maquinetas.json";
     a.click();
+
 }
