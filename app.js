@@ -1,24 +1,16 @@
-// ================= CONFIGURAÇÕES =================
+// ================= CONFIG =================
 
 const USUARIO_FIXO = "ericfilipe";
-
-// ⚠️ COLOQUE AQUI O HASH CORRETO DA SUA SENHA
-const SENHA_HASH_FIXA = "9c8f3c1a9b1d3e2e6c6b7c6a5f3a0d4e2b9a8c7d6e5f4a3b2c1d0e9f8a7b6c5";
-
 const TEMPO_EXPIRACAO = 30 * 60 * 1000; // 30 minutos
 
 let indexEditando = null;
 let grafico;
 
-// ================= HASH =================
+// ================= INICIALIZA SENHA PADRÃO =================
 
-async function gerarHash(texto) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(texto);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    return Array.from(new Uint8Array(hashBuffer))
-        .map(b => b.toString(16).padStart(2, "0"))
-        .join("");
+// Se ainda não existir senha salva, cria a padrão
+if (!localStorage.getItem("senhaAdmin")) {
+    localStorage.setItem("senhaAdmin", "Er1288@"); // senha inicial
 }
 
 // ================= SESSÃO =================
@@ -32,21 +24,19 @@ function verificarSessao() {
     const expiraEm = localStorage.getItem("expiraEm");
 
     if (!expiraEm || Date.now() > expiraEm) {
-        localStorage.removeItem("logado");
-        localStorage.removeItem("expiraEm");
-        window.location.href = "index.html";
+        logout();
     }
 }
 
 // ================= LOGIN =================
 
-async function login() {
+function login() {
     const usuario = document.getElementById("usuario")?.value;
     const senha = document.getElementById("senha")?.value;
 
-    const senhaHash = await gerarHash(senha);
+    const senhaSalva = localStorage.getItem("senhaAdmin");
 
-    if (usuario === USUARIO_FIXO && senhaHash === SENHA_HASH_FIXA) {
+    if (usuario === USUARIO_FIXO && senha === senhaSalva) {
         iniciarSessao();
         window.location.href = "dashboard.html";
     } else {
@@ -70,6 +60,20 @@ if (window.location.pathname.includes("dashboard")) {
         carregarPdvs();
         carregarMaquinetas();
     }
+}
+
+// ================= TROCAR SENHA =================
+
+function trocarSenha() {
+    const nova = prompt("Digite a nova senha:");
+
+    if (!nova || nova.length < 4) {
+        alert("Senha inválida.");
+        return;
+    }
+
+    localStorage.setItem("senhaAdmin", nova);
+    alert("Senha alterada com sucesso!");
 }
 
 // ================= PDV =================
@@ -139,50 +143,21 @@ function salvarMaquineta() {
 
     const maquinetas = JSON.parse(localStorage.getItem("maquinetas")) || [];
 
-    if (indexEditando !== null) {
-
-        const antiga = maquinetas[indexEditando];
-
-        if (antiga.local !== local || antiga.status !== status) {
-            antiga.movimentacoes.push({
-                data: new Date().toLocaleString(),
-                localAnterior: antiga.local,
-                localNovo: local,
-                statusAnterior: antiga.status,
-                statusNovo: status,
-                observacao: "Alteração manual"
-            });
-        }
-
-        maquinetas[indexEditando] = {
-            ...antiga,
-            serial,
-            empresa,
-            admin,
-            local,
-            status
-        };
-
-        indexEditando = null;
-
-    } else {
-
-        maquinetas.push({
-            serial,
-            empresa,
-            admin,
-            local,
-            status,
-            movimentacoes: [{
-                data: new Date().toLocaleString(),
-                localAnterior: "-",
-                localNovo: local,
-                statusAnterior: "-",
-                statusNovo: status,
-                observacao: "Cadastro inicial"
-            }]
-        });
-    }
+    maquinetas.push({
+        serial,
+        empresa,
+        admin,
+        local,
+        status,
+        movimentacoes: [{
+            data: new Date().toLocaleString(),
+            localAnterior: "-",
+            localNovo: local,
+            statusAnterior: "-",
+            statusNovo: status,
+            observacao: "Cadastro inicial"
+        }]
+    });
 
     localStorage.setItem("maquinetas", JSON.stringify(maquinetas));
     carregarMaquinetas();
@@ -195,18 +170,9 @@ function excluir(index) {
     carregarMaquinetas();
 }
 
-// ================= CARREGAR MAQUINETAS =================
-
 function carregarMaquinetas() {
-
     const maquinetas = JSON.parse(localStorage.getItem("maquinetas")) || [];
     const pdvs = JSON.parse(localStorage.getItem("pdvs")) || [];
-
-    const filtro = document.getElementById("filtroStatus")?.value || "Todos";
-
-    const filtradas = filtro === "Todos"
-        ? maquinetas
-        : maquinetas.filter(m => m.status === filtro);
 
     const tabela = document.getElementById("tabelaMaquinetas");
     const cardsMobile = document.getElementById("cardsMobile");
@@ -219,7 +185,7 @@ function carregarMaquinetas() {
         return encontrado ? encontrado.nome : "Removido";
     }
 
-    filtradas.forEach((m, index) => {
+    maquinetas.forEach((m, index) => {
 
         if (tabela) {
             tabela.innerHTML += `
@@ -228,9 +194,8 @@ function carregarMaquinetas() {
                 <td>${m.empresa}</td>
                 <td>${m.admin}</td>
                 <td>${nomePdv(m.local)}</td>
-                <td><span class="status ${m.status}">${m.status}</span></td>
+                <td>${m.status}</td>
                 <td>
-                    <button onclick="verHistorico(${index})">Histórico</button>
                     <button onclick="excluir(${index})">Excluir</button>
                 </td>
             </tr>`;
@@ -238,114 +203,15 @@ function carregarMaquinetas() {
 
         if (cardsMobile) {
             cardsMobile.innerHTML += `
-            <div class="mobile-card fade-in">
+            <div class="mobile-card">
                 <h3>${m.serial}</h3>
                 <p>${m.empresa}</p>
                 <p>${nomePdv(m.local)}</p>
-                <span class="status ${m.status}">${m.status}</span>
-                <button onclick="verHistorico(${index})">Histórico</button>
+                <p>${m.status}</p>
                 <button onclick="excluir(${index})">Excluir</button>
             </div>`;
         }
     });
-
-    atualizarDashboard(maquinetas, pdvs);
-    gerarGrafico(maquinetas);
-}
-
-// ================= DASHBOARD =================
-
-function atualizarDashboard(maquinetas, pdvs) {
-
-    const container = document.getElementById("cardsPdvs");
-    if (!container) return;
-
-    container.innerHTML = `
-        <div class="card-total">
-            <h3>Total Geral</h3>
-            <p>${maquinetas.length}</p>
-        </div>
-    `;
-
-    pdvs.forEach(pdv => {
-        const total = maquinetas.filter(m => m.local == pdv.id).length;
-        container.innerHTML += `
-            <div class="card-total">
-                <h3>${pdv.nome}</h3>
-                <p>${total}</p>
-            </div>`;
-    });
-}
-
-// ================= HISTÓRICO =================
-
-function verHistorico(index) {
-
-    const maquinetas = JSON.parse(localStorage.getItem("maquinetas")) || [];
-    const m = maquinetas[index];
-
-    const container = document.getElementById("conteudoHistorico");
-    container.innerHTML = "";
-
-    m.movimentacoes?.slice().reverse().forEach(mov => {
-        container.innerHTML += `
-        <div class="fade-in">
-            <strong>${mov.data}</strong><br>
-            ${mov.localAnterior} → ${mov.localNovo}<br>
-            ${mov.statusAnterior} → ${mov.statusNovo}<hr>
-        </div>`;
-    });
-
-    document.getElementById("modalHistorico").style.display = "flex";
-}
-
-function fecharModal() {
-    document.getElementById("modalHistorico").style.display = "none";
-}
-
-// ================= GRÁFICO =================
-
-function gerarGrafico(maquinetas) {
-
-    const contagem = {};
-
-    maquinetas.forEach(m => {
-        contagem[m.admin] = (contagem[m.admin] || 0) + 1;
-    });
-
-    const ctx = document.getElementById("graficoAdmin");
-    if (!ctx) return;
-
-    if (grafico) grafico.destroy();
-
-    grafico = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: Object.keys(contagem),
-            datasets: [{
-                label: "Maquinetas por Administradora",
-                data: Object.values(contagem)
-            }]
-        }
-    });
-}
-
-// ================= BACKUP =================
-
-function backupSistema() {
-    const dados = {
-        pdvs: JSON.parse(localStorage.getItem("pdvs")) || [],
-        maquinetas: JSON.parse(localStorage.getItem("maquinetas")) || []
-    };
-
-    const blob = new Blob([JSON.stringify(dados, null, 2)], {
-        type: "application/json"
-    });
-
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "backup_maquinetas.json";
-    a.click();
 }
 
 // ================= MENU MOBILE =================
