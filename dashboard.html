@@ -3,90 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - ERP Maquinetas</title>
+<title>EFC ERP - Dashboard</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="stylesheet" href="styles.css">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+        <img src="512.png" class="loading-logo">
+        <div class="spinner"></div>
+        <p>Carregando sistema...</p>
+    </div>
+</div>
 
 <div class="container">
 
-  <aside class="sidebar">
-    <h2>ERP</h2>
-    <button onclick="backupSistema()">Backup</button>
-    <button onclick="logout()">Sair</button>
-  </aside>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2>EFC ERP</h2>
 
-  <main class="main">
+        <button id="btnBackup">Backup</button>
+        <button onclick="logout()">Sair</button>
+    </aside>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <!-- MAIN -->
+    <main class="main fade-in">
 
-    <h1>Dashboard</h1>
+        <h1>Dashboard</h1>
 
-    <div id="cardsPdvs" class="cards"></div>
+        <!-- CARDS -->
+        <div id="cardsPdvs" class="cards"></div>
 
-    <canvas id="graficoAdmin" height="100"></canvas>
+        <!-- GRÁFICO -->
+        <canvas id="graficoAdmin" height="100"></canvas>
 
-    <h2>Cadastro PDV</h2>
-    <input type="text" id="novoPdv" placeholder="Nome do PDV">
-    <button onclick="cadastrarPdv()">Adicionar</button>
-    <ul id="listaPdvs"></ul>
+        <hr style="margin:30px 0; opacity:0.1;">
 
-    <h2>Cadastrar Maquineta</h2>
+        <!-- CADASTRO MAQUINETA -->
+        <h2>Cadastrar Maquineta</h2>
 
-    <div class="form-grid">
-      <input type="text" id="serial" placeholder="Serial">
-      <input type="text" id="empresa" placeholder="Empresa / CNPJ">
-      <input type="text" id="admin" placeholder="Administradora">
+        <div class="form-grid">
+            <input type="text" id="serial" placeholder="Serial">
+            <input type="text" id="empresa" placeholder="Empresa / CNPJ">
+            <input type="text" id="admin" placeholder="Administradora">
+            <select id="local"></select>
+            <select id="status">
+                <option value="Ativa">Ativa</option>
+                <option value="Manutenção">Manutenção</option>
+                <option value="Inativa">Inativa</option>
+            </select>
+            <button onclick="salvarMaquineta()">Salvar</button>
+        </div>
 
-      <select id="local"></select>
+        <!-- LISTA -->
+        <h2>Maquinetas</h2>
 
-      <select id="status">
-        <option value="Ativa">Ativa</option>
-        <option value="Manutenção">Manutenção</option>
-        <option value="Inativa">Inativa</option>
-      </select>
+        <table>
+            <thead>
+                <tr>
+                    <th>Serial</th>
+                    <th>Empresa</th>
+                    <th>Admin</th>
+                    <th>Local</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaMaquinetas"></tbody>
+        </table>
 
-      <button onclick="salvarMaquineta()">Salvar</button>
-    </div>
+        <div id="cardsMobile" class="cards-mobile"></div>
 
-    <h2>Maquinetas</h2>
+    </main>
 
-    <select id="filtroStatus" onchange="carregarMaquinetas()">
-      <option value="Todos">Todos</option>
-      <option value="Ativa">Ativa</option>
-      <option value="Manutenção">Manutenção</option>
-      <option value="Inativa">Inativa</option>
-    </select>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Serial</th>
-          <th>Empresa</th>
-          <th>Admin</th>
-          <th>Local</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody id="tabelaMaquinetas"></tbody>
-    </table>
-
-    <div id="cardsMobile" class="cards-mobile"></div>
-
-  </main>
-</div>
-
-<!-- Modal Histórico -->
-<div id="modalHistorico" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="fecharModal()">&times;</span>
-    <h2>Histórico</h2>
-    <div id="conteudoHistorico"></div>
-  </div>
 </div>
 
 <script src="app.js"></script>
+
+<script>
+// Loading animation
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        document.getElementById("loadingScreen").style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById("loadingScreen").style.display = "none";
+        }, 400);
+    }, 800);
+});
+</script>
+
 </body>
 </html>
