@@ -1,13 +1,13 @@
 {
   "name": "EFC Tecnologia e Sistemas LTDA",
   "short_name": "EFC ERP",
-  "description": "Sistema de gestão de maquinetas de cartão",
+  "description": "Sistema de gestão de maquinetas",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#0b1120",
   "theme_color": "#0b1120",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "./192.png",
