@@ -5,47 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EFC ERP - Dashboard</title>
 
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="./favicon.png">
+<link rel="stylesheet" href="./styles.css">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<!-- LOADING SCREEN -->
-<div id="loadingScreen" class="loading-screen">
-    <div class="loading-content">
-        <img src="512.png" class="loading-logo">
-        <div class="spinner"></div>
-        <p>Carregando sistema...</p>
-    </div>
-</div>
-
 <div class="container">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
         <h2>EFC ERP</h2>
-
         <button id="btnBackup">Backup</button>
         <button onclick="logout()">Sair</button>
     </aside>
 
-    <!-- MAIN -->
-    <main class="main fade-in">
+    <main class="main">
 
         <h1>Dashboard</h1>
 
-        <!-- CARDS -->
         <div id="cardsPdvs" class="cards"></div>
 
-        <!-- GRÁFICO -->
         <canvas id="graficoAdmin" height="100"></canvas>
 
-        <hr style="margin:30px 0; opacity:0.1;">
+        <hr>
 
-        <!-- CADASTRO MAQUINETA -->
         <h2>Cadastrar Maquineta</h2>
 
         <div class="form-grid">
@@ -61,7 +46,6 @@
             <button onclick="salvarMaquineta()">Salvar</button>
         </div>
 
-        <!-- LISTA -->
         <h2>Maquinetas</h2>
 
         <table>
@@ -81,22 +65,9 @@
         <div id="cardsMobile" class="cards-mobile"></div>
 
     </main>
-
 </div>
 
-<script src="app.js"></script>
-
-<script>
-// Loading animation
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        document.getElementById("loadingScreen").style.opacity = "0";
-        setTimeout(() => {
-            document.getElementById("loadingScreen").style.display = "none";
-        }, 400);
-    }, 800);
-});
-</script>
+<script src="./app.js"></script>
 
 </body>
 </html>
